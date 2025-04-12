@@ -1,0 +1,120 @@
+/* --- Reset & Global --- */
+/* --- Reset & Global --- */
+/* ... (Keep existing styles) ... */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #F8F9FA; color: #333; line-height: 1.5; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; padding: 2rem 1rem; }
+
+/* --- Main Page Container --- */
+/* ... (Keep existing styles) ... */
+.page-container { width: 100%; max-width: 1100px; background-color: #fff; border-radius: 12px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07); overflow: hidden; }
+
+/* --- Header --- */
+/* ... (Keep existing styles) ... */
+.app-header { padding: 1.5rem 2rem; border-bottom: 1px solid #eef2f7; }
+.app-header h1 { font-size: 1.75rem; font-weight: 700; color: #1a202c; }
+
+/* --- Main Content Layout --- */
+/* ... (Keep existing styles) ... */
+.main-content { display: flex; flex-wrap: wrap; padding: 2rem; gap: 2rem; }
+
+/* --- Left Panel --- */
+/* ... (Keep existing styles) ... */
+.left-panel { flex: 1.5; min-width: 300px; display: flex; flex-direction: column; }
+.upload-area { border: 2px dashed #a0aec0; border-radius: 8px; padding: 2rem; text-align: center; background-color: #fdfdfe; cursor: pointer; transition: background-color 0.2s ease, border-color 0.2s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 250px; margin-bottom: 1.5rem; }
+.upload-area:hover, .upload-area.dragover { background-color: #eef2ff; border-color: #4f46e5; }
+.upload-icon { font-size: 2.5rem; color: #a0aec0; margin-bottom: 1rem; }
+.upload-text { font-size: 1rem; font-weight: 500; color: #4a5568; margin-bottom: 0.25rem; }
+.upload-subtext { font-size: 0.875rem; color: #718096; }
+.file-name-display { display: block; margin-top: 1rem; font-size: 0.9rem; color: #38a169; font-weight: 500; word-break: break-all; }
+.file-input-hidden { display: none; }
+.player-section { width: 100%; margin-top: auto; }
+.player-placeholder { background-color: #eef2f7; height: 60px; border-radius: 8px; width: 100%; border: 1px solid #e2e8f0; box-shadow: inset 0 1px 3px rgba(0,0,0,0.03); }
+.player-section.active .player-placeholder { display: none; }
+.player-section:not(.active) .audio-player { display: none; }
+.audio-player { width: 100%; display: block; margin-top: 1rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.08); }
+.audio-player.hidden { display: none; }
+.alert { width: 100%; padding: 0.75rem 1rem; margin-bottom: 1rem; border-radius: 6px; font-size: 0.9rem; text-align: left; border: 1px solid transparent; }
+.alert.hidden { display: none; }
+/* ... (Keep alert colors) ... */
+.alert-info { background-color: #e0f2fe; color: #075985; border-color: #bae6fd; }
+.alert-success { background-color: #dcfce7; color: #166534; border-color: #bbf7d0; }
+.alert-danger { background-color: #fee2e2; color: #991b1b; border-color: #fecaca; }
+.alert-warning { background-color: #ffedd5; color: #9a3412; border-color: #fed7aa; }
+
+
+/* --- Right Panel --- */
+.right-panel { flex: 1; min-width: 300px; display: flex; flex-direction: column; gap: 1.5rem; }
+
+/* --- Options Container (Handles 3 items) --- */
+.options-container {
+    display: grid;
+    /* Will fit 3, 2 or 1 column based on available width */
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+}
+
+.option-box {
+    /* ... (Keep existing box base styles) ... */
+    background-color: #fff; border-radius: 12px; padding: 1.5rem; display: flex; flex-direction: column; align-items: flex-start; border: 1px solid #eef2f7; transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease; min-height: 120px; justify-content: space-between;
+}
+.option-box:hover { box-shadow: 0 6px 15px rgba(0, 0, 0, 0.06); border-color: #dee5ed; transform: translateY(-3px); }
+
+/* Box colors (border top) */
+.box-voice { background-color: #fefce8; border-top: 5px solid #facc15; /* Lighter Yellow */ }
+.box-stability { background-color: #f0fdf4; border-top: 5px solid #4ade80; /* Lighter Green ADDED BACK */ }
+.box-translation { background-color: #eff6ff; border-top: 5px solid #60a5fa; /* Lighter Blue */ }
+
+.option-icon {
+    /* ... (Keep existing icon base styles) ... */
+     font-size: 1.75rem; margin-bottom: 1rem; width: auto; text-align: left;
+}
+/* Icon colors */
+.box-voice .option-icon { color: #ca8a04; }
+.box-stability .option-icon { color: #16a34a; /* ADDED BACK */ }
+.box-translation .option-icon { color: #2563eb; }
+
+.option-content { /* ... (Keep existing styles) ... */ text-align: left; }
+.option-content h4 { /* ... */ font-size: 1.05rem; font-weight: 600; color: #1f2937; margin-bottom: 0.25rem; }
+.option-content p { /* ... */ font-size: 0.875rem; color: #4b5563; margin-bottom: 0.25rem; }
+.option-content small { /* ... */ font-size: 0.75rem; color: #6b7280; display: block; margin-top: 0.1rem; }
+
+/* Hidden controls */
+.controls-hidden { display: none; }
+
+/* API Error */
+.api-error-message { margin-top: 1rem; width: 100%; }
+
+/* --- Responsive --- */
+@media (max-width: 900px) {
+    /* ... (Keep existing @900px styles) ... */
+    .main-content { flex-direction: column; padding: 1.5rem; gap: 1.5rem; }
+    .left-panel, .right-panel { flex: none; width: 100%; }
+    .player-section { margin-top: 1.5rem; }
+    .options-container {
+        /* Explicitly define 3 columns for medium screens if desired */
+        /* grid-template-columns: repeat(3, 1fr); */
+        /* Or let auto-fit handle it (likely 2 or 3) */
+         grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+         gap: 1rem;
+    }
+     .option-box { padding: 1.25rem; min-height: 110px; }
+}
+
+@media (max-width: 600px) {
+    /* ... (Keep existing @600px styles) ... */
+    html { font-size: 15px; }
+    .app-header { padding: 1rem 1.5rem; }
+    .app-header h1 { font-size: 1.5rem; }
+    .main-content { padding: 1rem; }
+    .upload-area { padding: 1.5rem; min-height: 200px; }
+    .options-container {
+        /* Stack to single column or keep 2 columns */
+         grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); /* Might become 1 or 2 */
+    }
+    .option-box { padding: 1.25rem; min-height: auto; }
+    .option-icon { font-size: 1.5rem; margin-bottom: 0.75rem;}
+    .option-content h4 { font-size: 1rem; }
+    .option-content p { font-size: 0.8rem; }
+}

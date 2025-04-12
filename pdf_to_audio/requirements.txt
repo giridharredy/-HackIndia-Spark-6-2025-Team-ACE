@@ -1,0 +1,5 @@
+Flask
+elevenlabs==1.56.0  
+PyMuPDF
+python-dotenv
+httpx       

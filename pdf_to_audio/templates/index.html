@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PageToPlay - PDF & eBook to Audio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="page-container">
+        <header class="app-header">
+            <h1>PageToPlay</h1>
+        </header>
+
+        <main class="main-content">
+            <!-- Left Panel: Upload and Player -->
+            <section class="left-panel">
+                <form id="upload-form" action="#" method="post" enctype="multipart/form-data">
+                    <!-- Hidden actual file input -->
+                    <input type="file" id="pdf_file" name="pdf_file" accept=".pdf,.epub" class="file-input-hidden" required>
+
+                    <!-- Visible Drop Zone -->
+                    <label for="pdf_file" id="upload-area" class="upload-area">
+                        <i class="fa-solid fa-arrow-up-from-bracket upload-icon"></i>
+                        <p class="upload-text">Drag and drop your PDF or eBook here</p>
+                        <p class="upload-subtext">or click to browse files</p>
+                        <span id="file-name-display" class="file-name-display"></span>
+                    </label>
+
+                    <!-- Hidden Controls for Form Data -->
+                    <div class="controls-hidden">
+                        <label for="voice">Voice:</label>
+                        <select id="voice" name="voice" required>
+                            {% if voices %}
+                                {% for voice_name in voices %}
+                                    <option value="{{ voice_name }}" {% if voice_name == 'Rachel' %}selected{% endif %}>{{ voice_name }}</option>
+                                {% endfor %}
+                            {% else %}
+                                <option value="" disabled selected>Voice loading failed</option>
+                            {% endif %}
+                        </select>
+                        <!-- Stability input ADDED BACK -->
+                        <label for="stability">Stability:</label>
+                        <input type="range" id="stability" name="stability" min="0.0" max="1.0" step="0.05" value="0.70">
+                        <span id="stability-value">0.70</span> <!-- Optional display if needed elsewhere -->
+                    </div>
+
+                    <!-- Status & Player Area -->
+                    <div id="player-section" class="player-section">
+                         <div id="status" class="alert hidden" role="alert"></div>
+                         <div id="player-placeholder" class="player-placeholder"></div>
+                         <audio id="player" controls class="audio-player hidden"></audio>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Right Panel: Options -->
+            <section class="right-panel">
+                <div class="options-container">
+                    <!-- Choose Voice Box -->
+                    <div class="option-box box-voice">
+                        <div class="option-icon"><i class="fa-solid fa-microphone-lines"></i></div>
+                        <div class="option-content">
+                            <h4>Choose Voice</h4>
+                            <p>Select from multiple AI voices</p>
+                        </div>
+                    </div>
+
+                    <!-- Stability Box ADDED BACK -->
+                    <div class="option-box box-stability">
+                         <div class="option-icon"><i class="fa-solid fa-sliders"></i></div>
+                        <div class="option-content">
+                            <h4>Stability</h4>
+                            <p>Adjust voice stability settings</p>
+                             <!-- You could add the slider VISUALLY here too if desired -->
+                        </div>
+                    </div>
+
+                    <!-- Translation Box -->
+                    <div class="option-box box-translation">
+                         <div class="option-icon"><i class="fa-solid fa-language"></i></div>
+                        <div class="option-content">
+                            <h4>Translation</h4>
+                            <p>Translate to multiple languages</p>
+                            <small>(Feature coming soon)</small>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Display Voice/API Errors Here -->
+                {% if error_message %}
+                    <div class="api-error-message alert alert-warning" role="alert">
+                        <strong>API Warning:</strong> {{ error_message }}
+                    </div>
+                {% endif %}
+            </section>
+        </main>
+    </div><!-- /.page-container -->
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
