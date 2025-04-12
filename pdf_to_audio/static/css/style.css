@@ -1,120 +1,563 @@
 /* --- Reset & Global --- */
-/* --- Reset & Global --- */
-/* ... (Keep existing styles) ... */
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html { font-size: 16px; }
-body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #F8F9FA; color: #333; line-height: 1.5; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; padding: 2rem 1rem; }
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-/* --- Main Page Container --- */
-/* ... (Keep existing styles) ... */
-.page-container { width: 100%; max-width: 1100px; background-color: #fff; border-radius: 12px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07); overflow: hidden; }
+html {
+    font-size: 16px;
+}
+
+body {
+    font-family: 'Poppins', sans-serif; /* Using Google Font */
+    background: linear-gradient(135deg, #ece9e6 0%, #ffffff 100%); /* Subtle gradient background */
+    color: #4a4a4a; /* Dark grey text */
+    line-height: 1.6;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Vertically center */
+    min-height: 100vh;
+    padding: 2rem 1rem;
+}
+
+/* --- Main App Wrapper --- */
+.app-wrapper {
+    width: 100%;
+    max-width: 700px; /* Adjust as needed */
+    background-color: #ffffff;
+    border-radius: 15px; /* More rounded corners */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Contain shadows/borders */
+    border: 1px solid #eee;
+}
 
 /* --- Header --- */
-/* ... (Keep existing styles) ... */
-.app-header { padding: 1.5rem 2rem; border-bottom: 1px solid #eef2f7; }
-.app-header h1 { font-size: 1.75rem; font-weight: 700; color: #1a202c; }
+.app-header {
+    background: linear-gradient(to right, #6a11cb 0%, #2575fc 100%); /* Purple/Blue gradient */
+    color: white;
+    padding: 2rem 2.5rem;
+    text-align: center;
+    border-bottom-left-radius: 50% 20%; /* Curved bottom */
+    border-bottom-right-radius: 50% 20%;
+    margin-bottom: 1rem; /* Space below header */
+}
 
-/* --- Main Content Layout --- */
-/* ... (Keep existing styles) ... */
-.main-content { display: flex; flex-wrap: wrap; padding: 2rem; gap: 2rem; }
+.app-header h1 {
+    font-size: 2.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+}
+.app-header h1 i {
+    margin-right: 0.75rem;
+    opacity: 0.8;
+}
 
-/* --- Left Panel --- */
-/* ... (Keep existing styles) ... */
-.left-panel { flex: 1.5; min-width: 300px; display: flex; flex-direction: column; }
-.upload-area { border: 2px dashed #a0aec0; border-radius: 8px; padding: 2rem; text-align: center; background-color: #fdfdfe; cursor: pointer; transition: background-color 0.2s ease, border-color 0.2s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 250px; margin-bottom: 1.5rem; }
-.upload-area:hover, .upload-area.dragover { background-color: #eef2ff; border-color: #4f46e5; }
-.upload-icon { font-size: 2.5rem; color: #a0aec0; margin-bottom: 1rem; }
-.upload-text { font-size: 1rem; font-weight: 500; color: #4a5568; margin-bottom: 0.25rem; }
-.upload-subtext { font-size: 0.875rem; color: #718096; }
-.file-name-display { display: block; margin-top: 1rem; font-size: 0.9rem; color: #38a169; font-weight: 500; word-break: break-all; }
-.file-input-hidden { display: none; }
-.player-section { width: 100%; margin-top: auto; }
-.player-placeholder { background-color: #eef2f7; height: 60px; border-radius: 8px; width: 100%; border: 1px solid #e2e8f0; box-shadow: inset 0 1px 3px rgba(0,0,0,0.03); }
-.player-section.active .player-placeholder { display: none; }
-.player-section:not(.active) .audio-player { display: none; }
-.audio-player { width: 100%; display: block; margin-top: 1rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.08); }
-.audio-player.hidden { display: none; }
-.alert { width: 100%; padding: 0.75rem 1rem; margin-bottom: 1rem; border-radius: 6px; font-size: 0.9rem; text-align: left; border: 1px solid transparent; }
-.alert.hidden { display: none; }
-/* ... (Keep alert colors) ... */
-.alert-info { background-color: #e0f2fe; color: #075985; border-color: #bae6fd; }
-.alert-success { background-color: #dcfce7; color: #166534; border-color: #bbf7d0; }
-.alert-danger { background-color: #fee2e2; color: #991b1b; border-color: #fecaca; }
-.alert-warning { background-color: #ffedd5; color: #9a3412; border-color: #fed7aa; }
+.app-header p {
+    font-size: 1rem;
+    font-weight: 300;
+    opacity: 0.9;
+}
 
+/* --- Main Content Area --- */
+.main-content {
+    padding: 1.5rem 2.5rem 2.5rem; /* More padding */
+}
 
-/* --- Right Panel --- */
-.right-panel { flex: 1; min-width: 300px; display: flex; flex-direction: column; gap: 1.5rem; }
+/* --- Form Styling --- */
+.form-section {
+    margin-bottom: 2rem; /* Increase spacing */
+}
 
-/* --- Options Container (Handles 3 items) --- */
-.options-container {
-    display: grid;
-    /* Will fit 3, 2 or 1 column based on available width */
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 1.5rem;
+.form-label {
+    display: block;
+    margin-bottom: 0.75rem; /* Space below label */
+    font-weight: 500; /* Medium weight */
+    color: #333;
+    font-size: 1rem;
+}
+.form-label i {
+    margin-right: 0.5rem;
+    color: #6a11cb; /* Match gradient start */
+    width: 20px; /* Align icons */
+    text-align: center;
+}
+
+/* File Input */
+.form-control-file {
+    display: block;
     width: 100%;
+    font-size: 0.95rem;
+    padding: 5px; /* Minimal padding needed */
+    color: #555;
+}
+/* Style the "button" part of the file input */
+.form-control-file::file-selector-button {
+    padding: 0.6rem 1rem;
+    margin-right: 1rem;
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-weight: 500;
+    color: #333;
+}
+.form-control-file::file-selector-button:hover {
+    background-color: #e0e0e0;
 }
 
-.option-box {
-    /* ... (Keep existing box base styles) ... */
-    background-color: #fff; border-radius: 12px; padding: 1.5rem; display: flex; flex-direction: column; align-items: flex-start; border: 1px solid #eef2f7; transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease; min-height: 120px; justify-content: space-between;
+/* Select Input */
+.select-wrapper {
+    position: relative;
 }
-.option-box:hover { box-shadow: 0 6px 15px rgba(0, 0, 0, 0.06); border-color: #dee5ed; transform: translateY(-3px); }
-
-/* Box colors (border top) */
-.box-voice { background-color: #fefce8; border-top: 5px solid #facc15; /* Lighter Yellow */ }
-.box-stability { background-color: #f0fdf4; border-top: 5px solid #4ade80; /* Lighter Green ADDED BACK */ }
-.box-translation { background-color: #eff6ff; border-top: 5px solid #60a5fa; /* Lighter Blue */ }
-
-.option-icon {
-    /* ... (Keep existing icon base styles) ... */
-     font-size: 1.75rem; margin-bottom: 1rem; width: auto; text-align: left;
+.form-control {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 8px; /* Rounded */
+    appearance: none; /* Remove default arrow */
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
-/* Icon colors */
-.box-voice .option-icon { color: #ca8a04; }
-.box-stability .option-icon { color: #16a34a; /* ADDED BACK */ }
-.box-translation .option-icon { color: #2563eb; }
+.form-control:focus {
+    border-color: #8b5cf6; /* Purple focus */
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(139, 92, 246, 0.25);
+}
+/* Custom Arrow for Select */
+.select-wrapper::after {
+    content: '\f078'; /* Font Awesome down arrow */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    color: #aaa;
+    pointer-events: none; /* Allows clicking through to the select */
+    font-size: 0.8rem;
+}
 
-.option-content { /* ... (Keep existing styles) ... */ text-align: left; }
-.option-content h4 { /* ... */ font-size: 1.05rem; font-weight: 600; color: #1f2937; margin-bottom: 0.25rem; }
-.option-content p { /* ... */ font-size: 0.875rem; color: #4b5563; margin-bottom: 0.25rem; }
-.option-content small { /* ... */ font-size: 0.75rem; color: #6b7280; display: block; margin-top: 0.1rem; }
 
-/* Hidden controls */
-.controls-hidden { display: none; }
+/* Slider Section Styling */
+.sliders-section {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-top: 1rem;
+    border: 1px solid #e9ecef;
+}
+.slider-group {
+    margin-bottom: 1.5rem;
+}
+.slider-group:last-child {
+    margin-bottom: 0;
+}
 
-/* API Error */
-.api-error-message { margin-top: 1rem; width: 100%; }
+/* Range Slider Container */
+.range-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* Space between slider and value */
+    margin-top: 0.5rem;
+}
 
-/* --- Responsive --- */
-@media (max-width: 900px) {
-    /* ... (Keep existing @900px styles) ... */
-    .main-content { flex-direction: column; padding: 1.5rem; gap: 1.5rem; }
-    .left-panel, .right-panel { flex: none; width: 100%; }
-    .player-section { margin-top: 1.5rem; }
-    .options-container {
-        /* Explicitly define 3 columns for medium screens if desired */
-        /* grid-template-columns: repeat(3, 1fr); */
-        /* Or let auto-fit handle it (likely 2 or 3) */
-         grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-         gap: 1rem;
+/* Custom Range Slider Styling */
+.custom-range {
+    flex-grow: 1;
+    appearance: none;
+    width: 100%;
+    height: 8px; /* Track height */
+    background: #e9ecef; /* Track background */
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+}
+/* Thumb (Chrome, Safari, Edge) */
+.custom-range::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px; /* Thumb width */
+    height: 20px; /* Thumb height */
+    background: #6a11cb; /* Purple thumb */
+    border-radius: 50%;
+    cursor: pointer;
+    margin-top: -6px; /* Center thumb vertically */
+    box-shadow: 0 2px 5px rgba(106, 17, 203, 0.4);
+    transition: background-color 0.2s ease;
+}
+.custom-range:focus::-webkit-slider-thumb {
+     background: #4d0b91; /* Darker purple on focus */
+}
+/* Thumb (Firefox) */
+.custom-range::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #6a11cb;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none; /* Remove default border */
+    box-shadow: 0 2px 5px rgba(106, 17, 203, 0.4);
+    transition: background-color 0.2s ease;
+}
+.custom-range:focus::-moz-range-thumb {
+    background: #4d0b91;
+}
+/* Track (Firefox) */
+.custom-range::-moz-range-track {
+    width: 100%;
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+.range-display {
+    min-width: 45px;
+    text-align: center;
+    font-weight: 600;
+    color: #2575fc; /* Blue value */
+    font-size: 1rem;
+    background-color: #e7f1ff; /* Light blue background */
+    padding: 0.3rem 0.6rem;
+    border-radius: 5px;
+}
+
+/* Helper text below inputs */
+.form-text {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-top: 0.5rem; /* Space above help text */
+    display: block;
+}
+
+/* Submit Button Section */
+.submit-section {
+    text-align: center; /* Center button */
+    margin-top: 2.5rem;
+}
+
+.submit-btn {
+    background: linear-gradient(to right, #6a11cb 0%, #2575fc 100%);
+    color: white;
+    border: none;
+    padding: 0.8rem 2.5rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    border-radius: 50px; /* Pill shape */
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    letter-spacing: 0.5px;
+}
+.submit-btn i {
+    margin-right: 0.5rem;
+}
+
+.submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(106, 17, 203, 0.3);
+}
+
+.submit-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+    opacity: 0.7;
+}
+
+/* Results Section (Status & Player) */
+.results-section {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #eee;
+}
+
+/* Status Alert Styling */
+.alert {
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    border-left-width: 5px;
+    border-left-style: solid;
+}
+.alert.hidden { display: none !important; }
+
+.alert-success { color: #0f5132; background-color: #d1e7dd; border-color: #badbcc; }
+.alert-danger { color: #842029; background-color: #f8d7da; border-color: #f5c2c7; }
+.alert-warning { color: #664d03; background-color: #fff3cd; border-color: #ffecb5; }
+.alert-info { color: #055160; background-color: #cff4fc; border-color: #b6effb; }
+
+/* Voice error specific message */
+.voice-error-message { /* Uses alert-warning styles */ margin-bottom: 1.5rem;}
+.voice-error-message small { display: block; margin-top: 5px; font-size: 0.8rem; opacity: 0.8;}
+
+
+/* Audio Player Styling */
+.player-wrapper {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 10px;
+    border: 1px solid #e9ecef;
+}
+.player-wrapper.hidden { display: none !important; }
+
+.player-wrapper h3 {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    color: #333;
+}
+.player-wrapper h3 i {
+     margin-right: 0.5rem;
+     color: #2575fc; /* Blue */
+}
+
+.audio-player {
+    width: 100%;
+    border-radius: 5px; /* Slight rounding for player */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    .app-wrapper {
+        margin: 1rem; /* Add margin on smaller screens */
     }
-     .option-box { padding: 1.25rem; min-height: 110px; }
+    .main-content {
+        padding: 1.5rem;
+    }
+    .app-header {
+         padding: 1.5rem;
+         border-bottom-left-radius: 40% 15%;
+         border-bottom-right-radius: 40% 15%;
+    }
+    .app-header h1 { font-size: 1.8rem; }
+    .app-header p { font-size: 0.95rem; }
 }
 
-@media (max-width: 600px) {
-    /* ... (Keep existing @600px styles) ... */
+@media (max-width: 480px) {
     html { font-size: 15px; }
-    .app-header { padding: 1rem 1.5rem; }
-    .app-header h1 { font-size: 1.5rem; }
     .main-content { padding: 1rem; }
-    .upload-area { padding: 1.5rem; min-height: 200px; }
-    .options-container {
-        /* Stack to single column or keep 2 columns */
-         grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); /* Might become 1 or 2 */
-    }
-    .option-box { padding: 1.25rem; min-height: auto; }
-    .option-icon { font-size: 1.5rem; margin-bottom: 0.75rem;}
-    .option-content h4 { font-size: 1rem; }
-    .option-content p { font-size: 0.8rem; }
+    .app-header { padding: 1.2rem; }
+    .app-header h1 { font-size: 1.6rem; }
+    .app-header p { font-size: 0.9rem; }
+    .form-label { font-size: 0.95rem; }
+    .form-control, .form-control-file::file-selector-button { font-size: 0.9rem; padding: 0.6rem 0.8rem; }
+    .select-wrapper::after { right: 0.8rem; }
+    .sliders-section { padding: 1rem; }
+    .submit-btn { font-size: 1rem; padding: 0.7rem 2rem; }
+    .alert { padding: 0.8rem 1rem; font-size: 0.9rem;}
+    .player-wrapper { padding: 1rem;}
+    .player-wrapper h3 { font-size: 1.1rem; }
 }
+
+
+/* ================================= */
+/* START: Appended Sidebar Styles    */
+/* ================================= */
+
+.past-books-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 260px; /* Sidebar width */
+    background-color: #f8f9fa; /* Match slider section background */
+    border-right: 1px solid #e9ecef; /* Match slider section border */
+    padding: 1.5rem 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+    transition: transform 0.3s ease-in-out;
+    font-family: 'Poppins', sans-serif; /* Ensure font consistency */
+}
+
+.past-books-sidebar h2 {
+    font-size: 1.15rem; /* Slightly smaller than main header */
+    font-weight: 600; /* Match header h1 weight */
+    color: #4a4a4a; /* Match general text color */
+    margin-bottom: 1.25rem;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+}
+.past-books-sidebar h2 i {
+    margin-right: 0.75rem;
+    color: #6a11cb; /* Match primary purple from header gradient/icons */
+    font-size: 1.1em; /* Make icon slightly larger */
+    width: 22px;
+    text-align: center;
+}
+
+.past-books-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto; /* Enable scrolling */
+    flex-grow: 1; /* Take available space */
+    scrollbar-width: thin; /* For Firefox */
+    scrollbar-color: #ced4da #f8f9fa; /* Scrollbar colors (thumb/track) */
+}
+/* Webkit scrollbar */
+.past-books-list::-webkit-scrollbar {
+    width: 8px;
+}
+.past-books-list::-webkit-scrollbar-track {
+    background: #f8f9fa; /* Match sidebar background */
+}
+.past-books-list::-webkit-scrollbar-thumb {
+    background-color: #ced4da; /* Match form input border */
+    border-radius: 10px;
+    border: 2px solid #f8f9fa; /* Creates padding around thumb */
+}
+
+
+.past-book-item {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 1.5rem; /* Adjust padding */
+    font-size: 0.9rem;
+    color: #4a4a4a; /* Match general text color */
+    border-bottom: 1px solid #e9ecef; /* Match slider/player border */
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, border-left 0.2s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    border-left: 3px solid transparent; /* Add space for active indicator */
+    margin-left: -3px; /* Compensate for border width */
+}
+
+.past-book-item:last-child {
+    border-bottom: none;
+}
+
+.past-book-item i {
+    margin-right: 0.85rem;
+    color: #2575fc; /* Match secondary blue from header gradient/icons */
+    font-size: 0.95em;
+    width: 18px;
+    text-align: center;
+    flex-shrink: 0;
+    transition: color 0.2s ease;
+}
+
+.past-book-item span {
+     overflow: hidden;
+     text-overflow: ellipsis;
+}
+
+.past-book-item:hover {
+    background-color: #e7f1ff; /* Match slider value background */
+    color: #055160; /* Match info alert text color */
+    border-left-color: #a8c7fa; /* Lighter blue accent */
+}
+.past-book-item:hover i {
+    color: #6a11cb; /* Match primary purple on hover */
+}
+
+/* Style for a selected/active item */
+.past-book-item.active {
+    background-color: #e0e7ff; /* Slightly different shade of blue */
+    color: #4d0b91; /* Darker purple - like slider thumb focus */
+    font-weight: 500; /* Make text slightly bolder */
+    border-left: 3px solid #6a11cb; /* Strong purple indicator */
+}
+.past-book-item.active i {
+    color: #6a11cb; /* Ensure icon is purple */
+}
+
+/* Sidebar Footer (Optional) */
+.sidebar-footer {
+    padding: 0.75rem 1.5rem;
+    margin-top: 0.5rem; /* Space above footer */
+    border-top: 1px solid #e9ecef; /* Separator */
+}
+
+.clear-history-btn {
+    background: none;
+    border: 1px solid #ced4da; /* Match form input border */
+    color: #6c757d; /* Match form help text color */
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+    border-radius: 5px; /* Match file input button radius */
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    width: 100%;
+    text-align: center;
+}
+.clear-history-btn i {
+    margin-right: 0.4rem;
+}
+
+.clear-history-btn:hover {
+    background-color: #f8d7da; /* Match danger alert background */
+    color: #842029; /* Match danger alert text */
+    border-color: #f5c2c7; /* Match danger alert border */
+}
+
+
+/* --- Adjust Main Content Layout WHEN SIDEBAR IS VISIBLE --- */
+/* Apply ONLY when the sidebar should be visible (larger screens) */
+@media (min-width: 993px) { /* Breakpoint where sidebar appears */
+    body {
+        /* Override the flex centering from the base styles */
+         display: block; /* Remove flex behavior */
+         padding-left: 260px; /* Add padding equal to sidebar width */
+         padding-right: 1rem; /* Keep right padding */
+         /* Ensure alignment/justification defaults are okay */
+         /* align-items: initial; */
+         /* justify-content: initial; */
+    }
+
+    .app-wrapper.content-shifted {
+        margin-left: 0; /* Reset margin-left (body padding handles spacing) */
+        margin-right: auto; /* Keep it from stretching full width */
+        max-width: 700px; /* Maintain the original max-width for the content block */
+        /* Restore top/bottom margins if needed */
+         margin-top: 2rem;
+         margin-bottom: 2rem;
+    }
+}
+
+
+/* --- Responsive: Hide Sidebar and Reset Layout on Smaller Screens --- */
+@media (max-width: 992px) { /* Breakpoint where sidebar disappears */
+    .past-books-sidebar {
+        display: none; /* Hide the sidebar */
+    }
+
+    /* Reset body to original centering styles provided by user */
+     body {
+        display: flex; /* Restore flex */
+        justify-content: center; /* Restore centering */
+        align-items: center; /* Restore centering */
+        padding: 2rem 1rem; /* Restore original padding */
+        padding-left: 1rem; /* Ensure left padding isn't from the >992px rule */
+     }
+
+    .app-wrapper.content-shifted {
+        margin-left: auto; /* Reset margin for flex centering */
+        margin-right: auto; /* Reset margin for flex centering */
+        /* max-width is handled by the base .app-wrapper rule */
+        /* Margins top/bottom might be handled by body padding or base rule */
+    }
+
+     /* Your existing 768px and 480px rules will apply correctly now
+        as they modify the already centered layout */
+}
+
+/* ================================= */
+/* END: Appended Sidebar Styles      */
+/* ================================= */

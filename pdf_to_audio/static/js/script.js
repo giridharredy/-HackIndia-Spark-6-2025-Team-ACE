@@ -1,39 +1,39 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- Get DOM Elements ---
     const form = document.getElementById('upload-form');
+    const submitButton = document.getElementById('submit-button');
     const statusDiv = document.getElementById('status');
-    const playerSection = document.getElementById('player-section');
-    const playerPlaceholder = document.getElementById('player-placeholder');
+    const playerContainer = document.getElementById('player-container');
     const player = document.getElementById('player');
-
-    const uploadArea = document.getElementById('upload-area');
-    const fileInput = document.getElementById('pdf_file'); // The actual hidden input
-    const fileNameDisplay = document.getElementById('file-name-display');
-
-    // Controls (hidden, but needed for form data)
+    const pdfInput = document.getElementById('pdf_file');
     const voiceSelect = document.getElementById('voice');
-    // Stability elements ADDED BACK
-    const stabilitySlider = document.getElementById('stability');
-    const stabilityValueSpan = document.getElementById('stability-value'); // For hidden input display logic if needed
 
-    // --- Function to Update Slider Value Display (If needed for hidden span) ---
-    // This might not be strictly necessary if the span isn't visible,
-    // but good practice to keep it if the hidden span exists.
+    // --- Sliders and Value Displays ---
+    const stabilitySlider = document.getElementById('stability');
+    const stabilityValueSpan = document.getElementById('stability-value');
+    const similaritySlider = document.getElementById('similarity');
+    const similarityValueSpan = document.getElementById('similarity-value');
+
+    // --- NEW: Book Progress Elements ---
+    const bookProgressSidebar = document.getElementById('book-progress-sidebar');
+    const progressBarFill = document.getElementById('progress-bar-fill');
+    const progressPercentage = document.getElementById('progress-percentage');
+
+    // --- Function to Update Slider Value Display ---
     function updateSliderValue(slider, span) {
         if (slider && span) {
-            span.textContent = parseFloat(slider.value).toFixed(2); // Initial display
-            slider.addEventListener('input', () => { // Use 'input' for live updates
+            span.textContent = parseFloat(slider.value).toFixed(2);
+            slider.addEventListener('input', () => {
                 span.textContent = parseFloat(slider.value).toFixed(2);
             });
         }
     }
-    // Call it again for stability
-    updateSliderValue(stabilitySlider, stabilityValueSpan);
 
+    updateSliderValue(stabilitySlider, stabilityValueSpan);
+    updateSliderValue(similaritySlider, similarityValueSpan);
 
     // --- Function to Update Status Area ---
     function updateStatus(message, type = 'info') {
-        // ... (Keep existing logic) ...
         if (!statusDiv) return;
         statusDiv.textContent = message;
         statusDiv.className = 'alert';
@@ -41,123 +41,144 @@ document.addEventListener('DOMContentLoaded', () => {
         statusDiv.classList.remove('hidden');
     }
 
-    // --- Function to Show/Hide Player vs Placeholder ---
-    function showPlayer(show = true) {
-        // ... (Keep existing logic) ...
-         if (!playerSection) return;
-        if (show) {
-            playerSection.classList.add('active');
-            player.classList.remove('hidden');
-            playerPlaceholder?.classList.add('hidden');
-        } else {
-            playerSection.classList.remove('active');
-            player.classList.add('hidden');
-            player.src = '';
-            playerPlaceholder?.classList.remove('hidden');
-        }
-    }
-
-    // --- Function to Reset UI ---
+    // --- Function to Hide Status and Player ---
     function resetUI() {
-        // ... (Keep existing logic) ...
         if (statusDiv) statusDiv.classList.add('hidden');
-        showPlayer(false);
-        if (fileNameDisplay) fileNameDisplay.textContent = '';
-        if (fileInput) fileInput.value = '';
-        if (uploadArea) uploadArea.classList.remove('dragover');
-    }
-
-    // --- Handle File Display & Assignment ---
-    function handleFileSelect(file) {
-        // ... (Keep existing logic) ...
-        resetUI();
-        if (file && (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.epub'))) {
-            const dataTransfer = new DataTransfer();
-            dataTransfer.items.add(file);
-            fileInput.files = dataTransfer.files;
-            if (fileNameDisplay) { fileNameDisplay.textContent = `File ready: ${file.name}`; }
-            if (statusDiv) statusDiv.classList.add('hidden');
-            triggerProcessing(); // Auto-trigger
-        } else {
-            updateStatus('Invalid file type. Please upload a PDF or EPUB.', 'danger');
-            if (fileNameDisplay) fileNameDisplay.textContent = 'Invalid file type.';
+        if (playerContainer) playerContainer.classList.add('hidden');
+        if (player) player.src = '';
+        if (submitButton) {
+             submitButton.disabled = false;
+             // Reset icon along with text
+             submitButton.innerHTML = '<i class="fas fa-play"></i> Generate Audio';
         }
+        // NEW: Hide progress bar on UI reset
+        if (bookProgressSidebar) bookProgressSidebar.classList.add('hidden');
+        if (progressBarFill) progressBarFill.style.height = '0%';
+        if (progressPercentage) progressPercentage.textContent = '0%';
     }
 
-    // --- Drag and Drop Event Listeners ---
-    if (uploadArea && fileInput) {
-       // ... (Keep existing drag/drop logic) ...
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            uploadArea.addEventListener(eventName, (e) => { e.preventDefault(); e.stopPropagation(); }, false);
+    // --- Clear Status/Player on New File Selection ---
+    if (pdfInput) {
+        pdfInput.addEventListener('change', () => {
+            if (statusDiv) statusDiv.classList.add('hidden');
+            if (playerContainer) playerContainer.classList.add('hidden');
+            if (player) player.src = '';
+            // NEW: Hide progress bar when file changes
+             if (bookProgressSidebar) bookProgressSidebar.classList.add('hidden');
+             if (progressBarFill) progressBarFill.style.height = '0%';
+             if (progressPercentage) progressPercentage.textContent = '0%';
         });
-        ['dragenter', 'dragover'].forEach(eventName => {
-            uploadArea.addEventListener(eventName, () => { uploadArea.classList.add('dragover'); }, false);
-        });
-        ['dragleave', 'drop'].forEach(eventName => {
-            uploadArea.addEventListener(eventName, () => { uploadArea.classList.remove('dragover'); }, false);
-        });
-        uploadArea.addEventListener('drop', (e) => {
-            if (e.dataTransfer.files && e.dataTransfer.files.length > 0) { handleFileSelect(e.dataTransfer.files[0]); }
-        }, false);
-        fileInput.addEventListener('change', (e) => {
-            if (e.target.files && e.target.files.length > 0) { handleFileSelect(e.target.files[0]); }
-        });
-    } else {
-        console.error("Upload area or file input element not found.");
     }
 
+    // --- Handle Form Submission ---
+    if (form) {
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
 
-    // --- Function to Trigger Processing ---
-    async function triggerProcessing() {
-        // --- Validation (Add stability check if needed, browser handles range mostly) ---
-        if (!fileInput || !fileInput.files || fileInput.files.length === 0) { /*...*/ return; }
-        if (!voiceSelect || !voiceSelect.value) { /*...*/ return; }
-        // Optional: Check if stability slider exists and has a valid value if you want stricter JS validation
-        // if (!stabilitySlider || stabilitySlider.value === '') { ... }
-
-        // --- Update UI: Show Processing ---
-        showPlayer(false);
-        updateStatus('Processing... Please wait.', 'info');
-        if (uploadArea) uploadArea.style.pointerEvents = 'none';
-
-        // --- Prepare and Send Data ---
-        const formData = new FormData(form); // Will now include stability again
-
-        try {
-            const response = await fetch('/process', {
-                method: 'POST',
-                body: formData
-            });
-
-            // --- Handle Response ---
-            let result;
-            try {
-                 result = await response.json();
-            } catch (e) { /*...*/ return; }
-            finally { if (uploadArea) uploadArea.style.pointerEvents = 'auto'; }
-
-            if (response.ok && result.status === 'success') {
-                // ... (Keep existing success logic) ...
-                updateStatus(result.message || 'Audio generated successfully!', 'success');
-                if (result.audio_url && player) { player.src = result.audio_url; showPlayer(true); }
-                else { updateStatus('Processing succeeded, but could not find the audio file URL.', 'warning'); showPlayer(false); }
-            } else {
-                // ... (Keep existing error logic) ...
-                 console.error("Backend Error:", result);
-                 updateStatus(`Error: ${result.message || `An unknown error occurred (Status: ${response.status})`}`, 'danger');
-                 showPlayer(false);
+            if (!pdfInput.files || pdfInput.files.length === 0) {
+                updateStatus('Please select a PDF file.', 'danger');
+                return;
+            }
+            const file = pdfInput.files[0];
+            if (file.type !== 'application/pdf') {
+                 updateStatus('Selected file is not a PDF. Please upload a valid PDF file.', 'danger');
+                 return;
+            }
+            if (!voiceSelect || !voiceSelect.value) {
+                 updateStatus('Please select a voice.', 'danger');
+                 return;
             }
 
-        } catch (error) {
-             // ... (Keep existing network error logic) ...
-             console.error('Network/Fetch Error:', error);
-             updateStatus(`Network error: Could not connect. (${error.message || 'Unknown fetch error'})`, 'danger');
-             showPlayer(false);
-             if (uploadArea) uploadArea.style.pointerEvents = 'auto';
-        }
-    } // End of triggerProcessing
+            resetUI();
+            updateStatus('Processing... Please wait.', 'info');
+            submitButton.disabled = true;
+             // Update icon during processing
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
 
-    // --- Initialize UI ---
-    resetUI(); // Start with a clean state
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch('/process', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                let result;
+                try {
+                     result = await response.json();
+                } catch (e) {
+                     console.error("Failed to parse response as JSON:", e);
+                     const errorText = await response.text();
+                     updateStatus(`Server error (Status ${response.status}): ${errorText.substring(0, 200)}...`, 'danger');
+                     submitButton.disabled = false;
+                     submitButton.innerHTML = '<i class="fas fa-play"></i> Generate Audio';
+                     return;
+                }
+
+                if (response.ok && result.status === 'success') {
+                    updateStatus(result.message || 'Audio generated successfully!', 'success');
+                    if (result.audio_url && player && playerContainer && bookProgressSidebar) { // Check sidebar too
+                        player.src = result.audio_url;
+                        playerContainer.classList.remove('hidden');
+                        // NEW: Show the progress sidebar when audio is ready
+                        bookProgressSidebar.classList.remove('hidden');
+                    } else {
+                         console.warn("Success response received, but no audio URL or required elements found:", result);
+                         updateStatus('Processing succeeded, but could not find the audio file URL or UI elements.', 'warning');
+                    }
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = '<i class="fas fa-play"></i> Generate Audio';
+
+                } else {
+                    console.error("Backend Error:", result);
+                    updateStatus(`Error: ${result.message || `An unknown error occurred (Status: ${response.status})`}`, 'danger');
+                     submitButton.disabled = false;
+                     submitButton.innerHTML = '<i class="fas fa-play"></i> Generate Audio';
+                }
+
+            } catch (error) {
+                console.error('Network/Fetch Error:', error);
+                updateStatus(`Network error: Could not connect to the server. (${error.message || 'Unknown fetch error'})`, 'danger');
+                 submitButton.disabled = false;
+                 submitButton.innerHTML = '<i class="fas fa-play"></i> Generate Audio';
+            }
+        });
+    } else {
+        console.error("Could not find the upload form element (#upload-form).");
+    }
+
+    // --- NEW: Audio Playback Progress Update ---
+    if (player && progressBarFill && progressPercentage) {
+        player.addEventListener('timeupdate', () => {
+            if (player.duration && !isNaN(player.duration)) {
+                const progress = (player.currentTime / player.duration) * 100;
+                progressBarFill.style.height = `${progress}%`;
+                progressPercentage.textContent = `${Math.round(progress)}%`;
+            } else {
+                 // Handle cases where duration isn't available yet (e.g., initial load)
+                 progressBarFill.style.height = '0%';
+                 progressPercentage.textContent = '0%';
+            }
+        });
+
+        // Reset progress when audio ends or is paused/stopped manually
+         player.addEventListener('ended', () => {
+             // Optional: Keep progress at 100% on end, or reset
+             // progressBarFill.style.height = '0%';
+             // progressPercentage.textContent = '0%';
+         });
+          player.addEventListener('pause', () => {
+              // Update state if needed when paused
+          });
+           // Reset when src changes (e.g., new file loaded)
+           player.addEventListener('emptied', () => {
+             progressBarFill.style.height = '0%';
+             progressPercentage.textContent = '0%';
+          });
+
+    } else {
+        console.error("Could not find player or progress bar elements for audio progress updates.");
+    }
+
 
 }); // End DOMContentLoaded
