@@ -26,6 +26,8 @@ React + Tailwind CSS
 
 Framer Motion for animation
 
-(Planned) Google Cloud Translation API
+Future Plans:
 
-(Planned) Voice Customization APIs
+Google Cloud Translation API
+
+Voice Customization APIs
